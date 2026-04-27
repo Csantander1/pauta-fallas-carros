@@ -60,12 +60,11 @@ button {
 <input type="text" id="parte" placeholder="Parte">
 <input type="text" id="sintoma" placeholder="Síntoma">
 
-<h2>5 Porqués</h2>
-<textarea id="p1"></textarea>
-<textarea id="p2"></textarea>
-<textarea id="p3"></textarea>
-<textarea id="p4"></textarea>
-<textarea id="p5"></textarea>
+<textarea id="p1" placeholder="¿Por qué ocurrió la falla?"></textarea>
+<textarea id="p2" placeholder="¿Por qué ocurrió lo anterior?"></textarea>
+<textarea id="p3" placeholder="¿Por qué ocurrió lo anterior?"></textarea>
+<textarea id="p4" placeholder="¿Por qué ocurrió lo anterior?"></textarea>
+<textarea id="p5" placeholder="Causa raíz final"></textarea>
 
 <h2>6M</h2>
 <label><input type="checkbox" value="ManoObra"> Mano de Obra</label>
@@ -75,8 +74,18 @@ button {
 <label><input type="checkbox" value="MedioAmbiente"> Medio Ambiente</label>
 <label><input type="checkbox" value="Operacion"> Operación</label>
 
+<h2>Justificación de la Causa</h2>
+<textarea id="justificacion" placeholder="Explique por qué se determina esta causa raíz"></textarea>
+
 <h2>Acción Correctiva</h2>
-<textarea id="accion"></textarea>
+<textarea id="accion" placeholder="Describa la acción correctiva realizada o propuesta"></textarea>
+
+<h2>Responsables</h2>
+<input type="text" id="colaborador" placeholder="Nombre colaborador">
+<input type="text" id="supervisor" placeholder="Nombre supervisor">
+
+<h2>Observaciones</h2>
+<textarea id="observaciones" placeholder="Observaciones adicionales"></textarea>
 
 <h2>Fotos</h2>
 <input type="file" id="foto" multiple>
@@ -85,20 +94,76 @@ button {
 
 <script>
 function enviar() {
+
+    // CAPTURA DE DATOS
     const data = {
         carro: document.getElementById("carro").value,
         ot: document.getElementById("ot").value,
+        fechaInicio: document.getElementById("fechaInicio").value,
+        fechaTermino: document.getElementById("fechaTermino").value,
         sistema: document.getElementById("sistema").value,
-        accion: document.getElementById("accion").value
+        parte: document.getElementById("parte").value,
+        sintoma: document.getElementById("sintoma").value,
+
+        p1: document.getElementById("p1").value,
+        p2: document.getElementById("p2").value,
+        p3: document.getElementById("p3").value,
+        p4: document.getElementById("p4").value,
+        p5: document.getElementById("p5").value,
+
+        causas6m: obtenerCausas6M(),
+        justificacion: document.getElementById("justificacion").value,
+        accion: document.getElementById("accion").value,
+        colaborador: document.getElementById("colaborador").value,
+        supervisor: document.getElementById("supervisor").value,
+        observaciones: document.getElementById("observaciones").value
     };
 
     fetch("https://script.google.com/macros/s/AKfycbx9HT6inn1h6v1-pwLba4oJK4OgCaPAnfEMDtEjtQWoHTDEJ4nQ9L7BtGWeYItl7piL/exec", {
         method: "POST",
         body: JSON.stringify(data)
     })
-    .then(res => alert("Enviado correctamente"));
+    .then(res => res.text())
+    .then(res => {
+        console.log(res);
+        alert("Pauta enviada correctamente");
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Error al enviar");
+    });
+}
+  function obtenerCausas6M() {
+    let causas = [];
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(el => {
+        causas.push(el.value);
+    });
+    return causas.join(", ");
 }
 </script>
 
 </body>
 </html>
+
+const data = {
+    carro: document.getElementById("carro").value,
+    ot: document.getElementById("ot").value,
+    fechaInicio: document.getElementById("fechaInicio").value,
+    fechaTermino: document.getElementById("fechaTermino").value,
+    sistema: document.getElementById("sistema").value,
+    parte: document.getElementById("parte").value,
+    sintoma: document.getElementById("sintoma").value,
+
+    p1: document.getElementById("p1").value,
+    p2: document.getElementById("p2").value,
+    p3: document.getElementById("p3").value,
+    p4: document.getElementById("p4").value,
+    p5: document.getElementById("p5").value,
+
+    causas6m: obtenerCausas6M(),
+    justificacion: document.getElementById("justificacion").value,
+    accion: document.getElementById("accion").value,
+    colaborador: document.getElementById("colaborador").value,
+    supervisor: document.getElementById("supervisor").value,
+    observaciones: document.getElementById("observaciones").value
+};
