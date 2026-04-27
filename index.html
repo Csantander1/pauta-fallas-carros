@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pauta Digital Fallas</title>
+
+<style>
+body {
+    font-family: Arial;
+    margin: 10px;
+    background: #f4f6f9;
+}
+
+h2 {
+    background: #1e3a8a;
+    color: white;
+    padding: 10px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+}
+
+button {
+    padding: 12px;
+    width: 100%;
+    margin-top: 10px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    font-size: 16px;
+}
+</style>
+
+</head>
+<body>
+
+<h2>Datos Generales</h2>
+
+<input type="text" id="carro" placeholder="N° Carro">
+<input type="text" id="ot" placeholder="OT">
+<input type="date" id="fechaInicio">
+<input type="date" id="fechaTermino">
+
+<h2>Sistema</h2>
+<select id="sistema">
+<option>Freno</option>
+<option>Enganche</option>
+<option>Descarga</option>
+<option>Rodado</option>
+<option>Estructura</option>
+<option>Carga</option>
+<option>Residuos</option>
+</select>
+
+<h2>Falla</h2>
+<input type="text" id="parte" placeholder="Parte">
+<input type="text" id="sintoma" placeholder="Síntoma">
+
+<h2>5 Porqués</h2>
+<textarea id="p1"></textarea>
+<textarea id="p2"></textarea>
+<textarea id="p3"></textarea>
+<textarea id="p4"></textarea>
+<textarea id="p5"></textarea>
+
+<h2>6M</h2>
+<label><input type="checkbox" value="ManoObra"> Mano de Obra</label>
+<label><input type="checkbox" value="Metodo"> Método</label>
+<label><input type="checkbox" value="Material"> Material</label>
+<label><input type="checkbox" value="Maquinaria"> Maquinaria</label>
+<label><input type="checkbox" value="MedioAmbiente"> Medio Ambiente</label>
+<label><input type="checkbox" value="Operacion"> Operación</label>
+
+<h2>Acción Correctiva</h2>
+<textarea id="accion"></textarea>
+
+<h2>Fotos</h2>
+<input type="file" id="foto" multiple>
+
+<button onclick="enviar()">Enviar</button>
+
+<script>
+function enviar() {
+    const data = {
+        carro: document.getElementById("carro").value,
+        ot: document.getElementById("ot").value,
+        sistema: document.getElementById("sistema").value,
+        accion: document.getElementById("accion").value
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbx9HT6inn1h6v1-pwLba4oJK4OgCaPAnfEMDtEjtQWoHTDEJ4nQ9L7BtGWeYItl7piL/exec", {
+        method: "POST",
+        body: JSON.stringify(data)
+    })
+    .then(res => alert("Enviado correctamente"));
+}
+</script>
+
+</body>
+</html>
