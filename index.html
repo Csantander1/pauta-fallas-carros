@@ -151,7 +151,8 @@ button:hover {
 <div class="card">
 <h2>Fotos / Evidencias</h2>
 
-<input type="file" id="foto" multiple accept="image/*,.pdf">
+<input type="file" id="foto" multiple accept="image/*">
+<small>Máximo recomendado: 1 MB por foto. Subir primero 1 foto de prueba.</small>
 </div>
 
 <button onclick="enviar()">Enviar Pauta</button>
@@ -168,6 +169,11 @@ function obtenerCausas6M() {
 function enviar() {
 
     const archivos = document.getElementById("foto").files;
+    for (let i = 0; i < archivos.length; i++) {
+    if (archivos[i].size > 1000000) {
+        alert("La foto " + archivos[i].name + " pesa más de 1 MB. Debe comprimirse antes de enviar.");
+        return;
+    }          
     let fotos = [];
 
     const leerArchivos = Array.from(archivos).map(file => {
