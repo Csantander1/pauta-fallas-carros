@@ -3,167 +3,232 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pauta Digital Fallas</title>
+<title>Pauta Digital Fallas Carros</title>
 
 <style>
 body {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     margin: 10px;
     background: #f4f6f9;
+}
+
+h1 {
+    background: #111827;
+    color: white;
+    padding: 14px;
+    text-align: center;
 }
 
 h2 {
     background: #1e3a8a;
     color: white;
     padding: 10px;
+    margin-top: 18px;
 }
 
 input, select, textarea {
     width: 100%;
-    padding: 8px;
-    margin: 5px 0;
+    padding: 9px;
+    margin: 6px 0;
+    box-sizing: border-box;
+}
+
+textarea {
+    min-height: 65px;
+}
+
+label {
+    display: block;
+    margin: 8px 0;
 }
 
 button {
-    padding: 12px;
+    padding: 14px;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 15px;
     background: #2563eb;
     color: white;
     border: none;
-    font-size: 16px;
+    font-size: 17px;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.card {
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 </style>
-
 </head>
+
 <body>
 
+<h1>Pauta Digital de Análisis de Fallas en Carros</h1>
+
+<div class="card">
 <h2>Datos Generales</h2>
 
-<input type="text" id="carro" placeholder="N° Carro">
-<input type="text" id="ot" placeholder="OT">
+<input type="text" id="carro" placeholder="N° Carro / Contenedor">
+<input type="text" id="ot" placeholder="Orden de Trabajo OT">
 <input type="date" id="fechaInicio">
 <input type="date" id="fechaTermino">
+</div>
 
-<h2>Sistema</h2>
+<div class="card">
+<h2>Sistema Afectado</h2>
+
 <select id="sistema">
-<option>Freno</option>
-<option>Enganche</option>
-<option>Descarga</option>
-<option>Rodado</option>
-<option>Estructura</option>
-<option>Carga</option>
-<option>Residuos</option>
+    <option value="Freno">Freno</option>
+    <option value="Enganche">Enganche</option>
+    <option value="Descarga">Descarga</option>
+    <option value="Rodado">Rodado</option>
+    <option value="Estructura">Estructura</option>
+    <option value="Carga">Carga</option>
+    <option value="Residuos">Residuos</option>
 </select>
+</div>
 
-<h2>Falla</h2>
-<input type="text" id="parte" placeholder="Parte">
-<input type="text" id="sintoma" placeholder="Síntoma">
+<div class="card">
+<h2>Falla Detectada</h2>
+
+<input type="text" id="parte" placeholder="Indique parte afectada">
+<input type="text" id="sintoma" placeholder="Indique síntoma detectado">
+</div>
+
+<div class="card">
+<h2>Análisis de Falla - 5 Porqués</h2>
 
 <textarea id="p1" placeholder="¿Por qué ocurrió la falla?"></textarea>
 <textarea id="p2" placeholder="¿Por qué ocurrió lo anterior?"></textarea>
 <textarea id="p3" placeholder="¿Por qué ocurrió lo anterior?"></textarea>
 <textarea id="p4" placeholder="¿Por qué ocurrió lo anterior?"></textarea>
 <textarea id="p5" placeholder="Causa raíz final"></textarea>
+</div>
 
-<h2>6M</h2>
-<label><input type="checkbox" value="ManoObra"> Mano de Obra</label>
-<label><input type="checkbox" value="Metodo"> Método</label>
+<div class="card">
+<h2>Clasificación de Causa - 6M</h2>
+
+<label><input type="checkbox" value="Mano de Obra"> Mano de Obra</label>
+<label><input type="checkbox" value="Método"> Método</label>
 <label><input type="checkbox" value="Material"> Material</label>
-<label><input type="checkbox" value="Maquinaria"> Maquinaria</label>
-<label><input type="checkbox" value="MedioAmbiente"> Medio Ambiente</label>
-<label><input type="checkbox" value="Operacion"> Operación</label>
+<label><input type="checkbox" value="Maquinaria / Equipo"> Maquinaria / Equipo</label>
+<label><input type="checkbox" value="Medio Ambiente"> Medio Ambiente</label>
+<label><input type="checkbox" value="Operación"> Operación</label>
+</div>
 
+<div class="card">
 <h2>Justificación de la Causa</h2>
+
 <textarea id="justificacion" placeholder="Explique por qué se determina esta causa raíz"></textarea>
+</div>
 
+<div class="card">
 <h2>Acción Correctiva</h2>
-<textarea id="accion" placeholder="Describa la acción correctiva realizada o propuesta"></textarea>
 
+<textarea id="accion" placeholder="Describa la acción correctiva realizada o propuesta"></textarea>
+</div>
+
+<div class="card">
 <h2>Responsables</h2>
+
 <input type="text" id="colaborador" placeholder="Nombre colaborador">
 <input type="text" id="supervisor" placeholder="Nombre supervisor">
+</div>
 
+<div class="card">
 <h2>Observaciones</h2>
+
 <textarea id="observaciones" placeholder="Observaciones adicionales"></textarea>
+</div>
 
-<h2>Fotos</h2>
-<input type="file" id="foto" multiple>
+<div class="card">
+<h2>Fotos / Evidencias</h2>
 
-<button onclick="enviar()">Enviar</button>
+<input type="file" id="foto" multiple accept="image/*,.pdf">
+</div>
+
+<button onclick="enviar()">Enviar Pauta</button>
 
 <script>
-function enviar() {
-
-    // CAPTURA DE DATOS
-    const data = {
-        carro: document.getElementById("carro").value,
-        ot: document.getElementById("ot").value,
-        fechaInicio: document.getElementById("fechaInicio").value,
-        fechaTermino: document.getElementById("fechaTermino").value,
-        sistema: document.getElementById("sistema").value,
-        parte: document.getElementById("parte").value,
-        sintoma: document.getElementById("sintoma").value,
-
-        p1: document.getElementById("p1").value,
-        p2: document.getElementById("p2").value,
-        p3: document.getElementById("p3").value,
-        p4: document.getElementById("p4").value,
-        p5: document.getElementById("p5").value,
-
-        causas6m: obtenerCausas6M(),
-        justificacion: document.getElementById("justificacion").value,
-        accion: document.getElementById("accion").value,
-        colaborador: document.getElementById("colaborador").value,
-        supervisor: document.getElementById("supervisor").value,
-        observaciones: document.getElementById("observaciones").value
-    };
-
-    fetch("https://script.google.com/macros/s/AKfycbx9HT6inn1h6v1-pwLba4oJK4OgCaPAnfEMDtEjtQWoHTDEJ4nQ9L7BtGWeYItl7piL/exec", {
-        method: "POST",
-        body: JSON.stringify(data)
-    })
-    .then(res => res.text())
-    .then(res => {
-        console.log(res);
-        alert("Pauta enviada correctamente");
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Error al enviar");
-    });
-}
-  function obtenerCausas6M() {
+function obtenerCausas6M() {
     let causas = [];
     document.querySelectorAll('input[type="checkbox"]:checked').forEach(el => {
         causas.push(el.value);
     });
     return causas.join(", ");
 }
+
+function enviar() {
+
+    const archivos = document.getElementById("foto").files;
+    let fotos = [];
+
+    const leerArchivos = Array.from(archivos).map(file => {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                fotos.push({
+                    nombre: file.name,
+                    tipo: file.type,
+                    base64: e.target.result.split(",")[1]
+                });
+                resolve();
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+
+    Promise.all(leerArchivos).then(() => {
+
+        const data = {
+            carro: document.getElementById("carro").value,
+            ot: document.getElementById("ot").value,
+            fechaInicio: document.getElementById("fechaInicio").value,
+            fechaTermino: document.getElementById("fechaTermino").value,
+            sistema: document.getElementById("sistema").value,
+            parte: document.getElementById("parte").value,
+            sintoma: document.getElementById("sintoma").value,
+
+            p1: document.getElementById("p1").value,
+            p2: document.getElementById("p2").value,
+            p3: document.getElementById("p3").value,
+            p4: document.getElementById("p4").value,
+            p5: document.getElementById("p5").value,
+
+            causas6m: obtenerCausas6M(),
+            justificacion: document.getElementById("justificacion").value,
+            accion: document.getElementById("accion").value,
+            colaborador: document.getElementById("colaborador").value,
+            supervisor: document.getElementById("supervisor").value,
+            observaciones: document.getElementById("observaciones").value,
+
+            fotos: fotos
+        };
+
+        fetch("https://script.google.com/macros/s/AKfycbx9HT6inn1h6v1-pwLba4oJK4OgCaPAnfEMDtEjtQWoHTDEJ4nQ9L7BtGWeYItl7piL/exec", {
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+        .then(res => res.text())
+        .then(res => {
+            console.log(res);
+            alert("Pauta enviada correctamente");
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Error al enviar la pauta");
+        });
+
+    });
+}
 </script>
 
 </body>
 </html>
-
-const data = {
-    carro: document.getElementById("carro").value,
-    ot: document.getElementById("ot").value,
-    fechaInicio: document.getElementById("fechaInicio").value,
-    fechaTermino: document.getElementById("fechaTermino").value,
-    sistema: document.getElementById("sistema").value,
-    parte: document.getElementById("parte").value,
-    sintoma: document.getElementById("sintoma").value,
-
-    p1: document.getElementById("p1").value,
-    p2: document.getElementById("p2").value,
-    p3: document.getElementById("p3").value,
-    p4: document.getElementById("p4").value,
-    p5: document.getElementById("p5").value,
-
-    causas6m: obtenerCausas6M(),
-    justificacion: document.getElementById("justificacion").value,
-    accion: document.getElementById("accion").value,
-    colaborador: document.getElementById("colaborador").value,
-    supervisor: document.getElementById("supervisor").value,
-    observaciones: document.getElementById("observaciones").value
-};
