@@ -167,13 +167,15 @@ function obtenerCausas6M() {
 }
 
 function enviar() {
-
     const archivos = document.getElementById("foto").files;
+
     for (let i = 0; i < archivos.length; i++) {
-    if (archivos[i].size > 1000000) {
-        alert("La foto " + archivos[i].name + " pesa más de 1 MB. Debe comprimirse antes de enviar.");
-        return;
-    }          
+        if (archivos[i].size > 1000000) {
+            alert("La foto " + archivos[i].name + " pesa más de 1 MB. Debe comprimirse antes de enviar.");
+            return;
+        }
+    }
+
     let fotos = [];
 
     const leerArchivos = Array.from(archivos).map(file => {
@@ -192,7 +194,6 @@ function enviar() {
     });
 
     Promise.all(leerArchivos).then(() => {
-
         const data = {
             carro: document.getElementById("carro").value,
             ot: document.getElementById("ot").value,
@@ -201,20 +202,17 @@ function enviar() {
             sistema: document.getElementById("sistema").value,
             parte: document.getElementById("parte").value,
             sintoma: document.getElementById("sintoma").value,
-
             p1: document.getElementById("p1").value,
             p2: document.getElementById("p2").value,
             p3: document.getElementById("p3").value,
             p4: document.getElementById("p4").value,
             p5: document.getElementById("p5").value,
-
             causas6m: obtenerCausas6M(),
             justificacion: document.getElementById("justificacion").value,
             accion: document.getElementById("accion").value,
             colaborador: document.getElementById("colaborador").value,
             supervisor: document.getElementById("supervisor").value,
             observaciones: document.getElementById("observaciones").value,
-
             fotos: fotos
         };
 
@@ -231,7 +229,6 @@ function enviar() {
             console.error(err);
             alert("Error al enviar la pauta");
         });
-
     });
 }
 </script>
