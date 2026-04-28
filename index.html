@@ -222,9 +222,14 @@ function enviar() {
         })
         .then(res => res.text())
         .then(res => {
-            console.log(res);
-            alert("Pauta enviada correctamente");
-        })
+    console.log("Respuesta Apps Script:", res);
+
+    if (res.includes("OK")) {
+        alert("Pauta enviada correctamente");
+    } else {
+        alert("ERROR desde Apps Script: " + res);
+    }
+})
         .catch(err => {
             console.error(err);
             alert("Error al enviar la pauta");
