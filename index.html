@@ -170,8 +170,8 @@ function enviar() {
     const archivos = document.getElementById("foto").files;
 
     for (let i = 0; i < archivos.length; i++) {
-        if (archivos[i].size > 2000000) {
-            alert("La foto " + archivos[i].name + " pesa más de 2 MB. Debe comprimirse antes de enviar.");
+        if (archivos[i].size > 5000000) {
+            alert("La foto " + archivos[i].name + " pesa más de 5 MB. Debe comprimirse antes de enviar.");
             return;
         }
     }
