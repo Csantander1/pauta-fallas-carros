@@ -244,6 +244,21 @@ function limpiarFirma(canvasId) {
 window.onload = function() {
     prepararFirma("firmaColaborador");
 }; 
+function firmaVacia(canvasId) {
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext("2d");
+
+    const pixelData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+    for (let i = 0; i < pixelData.length; i += 4) {
+        if (pixelData[i + 3] !== 0) { // canal alpha
+            return false; // hay algo dibujado
+        }
+    }
+
+    return true; // está vacío
+}
+    
 function enviar() {
     const archivos = document.getElementById("foto").files;
 if (archivos.length > 2) {
@@ -354,8 +369,8 @@ if (!document.getElementById("colaborador").value.trim()) {
 }
 
 // 🔴 FIRMA
-const firma = document.getElementById("firmaColaborador").toDataURL();
-if (firma.length < 2000) {
+        
+if (firmaVacia("firmaColaborador")) {
     alert("Debe ingresar la firma del colaborador");
     return;
 }
