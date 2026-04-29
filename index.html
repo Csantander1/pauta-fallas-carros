@@ -275,6 +275,90 @@ if (archivos.length > 2) {
     });
 
     Promise.all(leerArchivos).then(() => {
+
+        // 🔴 VALIDACION DE CAMPOS OBLIGATORIOS
+
+if (!document.getElementById("carro").value.trim()) {
+    alert("Debe ingresar el N° de Carro");
+    return;
+}
+
+if (!document.getElementById("ot").value.trim()) {
+    alert("Debe ingresar la OT");
+    return;
+}
+
+if (!document.getElementById("fechaInicio").value) {
+    alert("Debe ingresar la fecha de inicio");
+    return;
+}
+
+if (!document.getElementById("fechaTermino").value) {
+    alert("Debe ingresar la fecha de término");
+    return;
+}
+
+if (!document.getElementById("sistema").value) {
+    alert("Debe seleccionar un sistema");
+    return;
+}
+
+if (!document.getElementById("parte").value.trim()) {
+    alert("Debe ingresar la parte afectada");
+    return;
+}
+
+if (!document.getElementById("sintoma").value.trim()) {
+    alert("Debe ingresar el síntoma");
+    return;
+}
+
+// 🔴 3 POR QUÉS MINIMO
+if (!document.getElementById("p1").value.trim()) {
+    alert("Debe ingresar ¿Por qué 1?");
+    return;
+}
+
+if (!document.getElementById("p2").value.trim()) {
+    alert("Debe ingresar ¿Por qué 2?");
+    return;
+}
+
+if (!document.getElementById("p3").value.trim()) {
+    alert("Debe ingresar ¿Por qué 3?");
+    return;
+}
+
+// 🔴 CAUSA 6M
+if (!obtenerCausas6M()) {
+    alert("Debe seleccionar al menos una causa 6M");
+    return;
+}
+
+// 🔴 JUSTIFICACION
+if (!document.getElementById("justificacion").value.trim()) {
+    alert("Debe ingresar la justificación de la causa");
+    return;
+}
+
+// 🔴 ACCION CORRECTIVA
+if (!document.getElementById("accion").value.trim()) {
+    alert("Debe ingresar la acción correctiva");
+    return;
+}
+
+// 🔴 COLABORADOR
+if (!document.getElementById("colaborador").value.trim()) {
+    alert("Debe ingresar el nombre del colaborador");
+    return;
+}
+
+// 🔴 FIRMA
+const firma = document.getElementById("firmaColaborador").toDataURL();
+if (firma.length < 2000) {
+    alert("Debe ingresar la firma del colaborador");
+    return;
+}
         const data = {
             carro: document.getElementById("carro").value,
             ot: document.getElementById("ot").value,
