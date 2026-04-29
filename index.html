@@ -1,16 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pauta Digital Fallas Carros</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 10px;
+    background: #f4f6f9;
+}
+
+h1 {
+    background: #111827;
+    color: white;
+    padding: 14px;
+    text-align: center;
+}
+
+h2 {
+    background: #1e3a8a;
+    color: white;
+    padding: 10px;
+    margin-top: 18px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 9px;
+    margin: 6px 0;
+    box-sizing: border-box;
+}
+
+textarea {
+    min-height: 65px;
+}
+
+label {
+    display: block;
+    margin: 8px 0;
+}
+
+button {
+    padding: 14px;
+    width: 100%;
+    margin-top: 15px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    font-size: 17px;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.card {
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.firmaCanvas {
+    width: 100%;
+    height: 160px;
+    border: 2px solid #1e3a8a;
+    background: white;
+    touch-action: none;
+    border-radius: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Pauta Digital de Análisis de Fallas en Carros</h1>
+
+<div class="card">
+<h2>Datos Generales</h2>
+<input type="text" id="carro" placeholder="N° Carro / Contenedor">
+<input type="text" id="ot" placeholder="Orden de Trabajo OT">
+<input type="date" id="fechaInicio">
+<input type="date" id="fechaTermino">
+</div>
+
+<div class="card">
+<h2>Sistema Afectado</h2>
+<select id="sistema">
+    <option value="">Seleccione sistema</option>
+    <option value="Freno">Freno</option>
+    <option value="Enganche">Enganche</option>
+    <option value="Descarga">Descarga</option>
+    <option value="Rodado">Rodado</option>
+    <option value="Estructura">Estructura</option>
+    <option value="Carga">Carga</option>
+    <option value="Residuos">Residuos</option>
+</select>
+</div>
+
+<div class="card">
+<h2>Falla Detectada</h2>
+<input type="text" id="parte" placeholder="Indique parte afectada">
+<input type="text" id="sintoma" placeholder="Indique síntoma detectado">
+</div>
+
+<div class="card">
+<h2>Análisis de Falla - 5 Porqués</h2>
+<textarea id="p1" placeholder="¿Por qué ocurrió la falla?"></textarea>
+<textarea id="p2" placeholder="¿Por qué ocurrió lo anterior?"></textarea>
+<textarea id="p3" placeholder="¿Por qué ocurrió lo anterior?"></textarea>
+<textarea id="p4" placeholder="¿Por qué ocurrió lo anterior? Opcional"></textarea>
+<textarea id="p5" placeholder="Causa raíz final. Opcional"></textarea>
+</div>
+
+<div class="card">
+<h2>Clasificación de Causa - 6M</h2>
+<label><input type="checkbox" value="Mano de Obra"> Mano de Obra</label>
+<label><input type="checkbox" value="Método"> Método</label>
+<label><input type="checkbox" value="Material"> Material</label>
+<label><input type="checkbox" value="Maquinaria / Equipo"> Maquinaria / Equipo</label>
+<label><input type="checkbox" value="Medio Ambiente"> Medio Ambiente</label>
+<label><input type="checkbox" value="Operación"> Operación</label>
+</div>
+
+<div class="card">
+<h2>Justificación de la Causa</h2>
+<textarea id="justificacion" placeholder="Explique por qué se determina esta causa raíz"></textarea>
+</div>
+
+<div class="card">
+<h2>Acción Correctiva</h2>
+<textarea id="accion" placeholder="Describa la acción correctiva realizada o propuesta"></textarea>
+</div>
+
+<div class="card">
+<h2>Responsables</h2>
+<input type="text" id="colaborador" placeholder="Nombre colaborador">
+
+<label>Firma Colaborador</label>
+<canvas id="firmaColaborador" class="firmaCanvas"></canvas>
+<button type="button" onclick="limpiarFirma()">Limpiar firma colaborador</button>
+
+<input type="text" id="supervisor" placeholder="Nombre supervisor / revisor">
+</div>
+
+<div class="card">
+<h2>Observaciones</h2>
+<textarea id="observaciones" placeholder="Observaciones adicionales. Opcional"></textarea>
+</div>
+
+<div class="card">
+<h2>Fotos / Evidencias</h2>
+<input type="file" id="foto" multiple accept="image/*">
+<small>Máximo recomendado: 2 fotos, 6 MB por foto.</small>
+</div>
+
+<button type="button" onclick="enviar()">Enviar Pauta</button>
+
 <script>
 let firmaColaboradorRealizada = false;
 
 function obtenerCausas6M() {
     let causas = [];
-    document.querySelectorAll('input[type="checkbox"]:checked').forEach(el => {
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(function(el) {
         causas.push(el.value);
     });
     return causas.join(", ");
 }
 
-function prepararFirma(canvasId) {
-    const canvas = document.getElementById(canvasId);
+function prepararFirma() {
+    const canvas = document.getElementById("firmaColaborador");
     const ctx = canvas.getContext("2d");
 
     function ajustarCanvas() {
@@ -28,10 +192,10 @@ function prepararFirma(canvasId) {
 
     function getPos(e) {
         const rect = canvas.getBoundingClientRect();
-        const touch = e.touches ? e.touches[0] : e;
+        const punto = e.touches ? e.touches[0] : e;
         return {
-            x: touch.clientX - rect.left,
-            y: touch.clientY - rect.top
+            x: punto.clientX - rect.left,
+            y: punto.clientY - rect.top
         };
     }
 
@@ -53,7 +217,7 @@ function prepararFirma(canvasId) {
     }
 
     function terminar(e) {
-        e.preventDefault();
+        if (e) e.preventDefault();
         dibujando = false;
     }
 
@@ -62,21 +226,19 @@ function prepararFirma(canvasId) {
     canvas.addEventListener("mouseup", terminar);
     canvas.addEventListener("mouseleave", terminar);
 
-    canvas.addEventListener("touchstart", iniciar);
-    canvas.addEventListener("touchmove", dibujar);
-    canvas.addEventListener("touchend", terminar);
+    canvas.addEventListener("touchstart", iniciar, { passive: false });
+    canvas.addEventListener("touchmove", dibujar, { passive: false });
+    canvas.addEventListener("touchend", terminar, { passive: false });
 }
 
-function limpiarFirma(canvasId) {
-    const canvas = document.getElementById(canvasId);
+function limpiarFirma() {
+    const canvas = document.getElementById("firmaColaborador");
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     firmaColaboradorRealizada = false;
 }
 
-window.onload = function() {
-    prepararFirma("firmaColaborador");
-};
+window.addEventListener("load", prepararFirma);
 
 function validarFormulario() {
     if (!document.getElementById("carro").value.trim()) {
@@ -178,8 +340,8 @@ function enviar() {
 
     let fotos = [];
 
-    const leerArchivos = Array.from(archivos).map(file => {
-        return new Promise((resolve) => {
+    const leerArchivos = Array.from(archivos).map(function(file) {
+        return new Promise(function(resolve) {
             const reader = new FileReader();
             reader.onload = function(e) {
                 fotos.push({
@@ -193,7 +355,7 @@ function enviar() {
         });
     });
 
-    Promise.all(leerArchivos).then(() => {
+    Promise.all(leerArchivos).then(function() {
         const data = {
             carro: document.getElementById("carro").value,
             ot: document.getElementById("ot").value,
@@ -221,8 +383,10 @@ function enviar() {
             method: "POST",
             body: JSON.stringify(data)
         })
-        .then(res => res.text())
-        .then(res => {
+        .then(function(res) {
+            return res.text();
+        })
+        .then(function(res) {
             console.log("Respuesta Apps Script:", res);
 
             if (res.includes("OK")) {
@@ -231,10 +395,13 @@ function enviar() {
                 alert("ERROR desde Apps Script: " + res);
             }
         })
-        .catch(err => {
+        .catch(function(err) {
             console.error(err);
             alert("Error al enviar la pauta");
         });
     });
 }
 </script>
+
+</body>
+</html>
