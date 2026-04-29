@@ -1,175 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pauta Digital Fallas Carros</title>
-
-<style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 10px;
-    background: #f4f6f9;
-}
-
-h1 {
-    background: #111827;
-    color: white;
-    padding: 14px;
-    text-align: center;
-}
-
-h2 {
-    background: #1e3a8a;
-    color: white;
-    padding: 10px;
-    margin-top: 18px;
-}
-
-input, select, textarea {
-    width: 100%;
-    padding: 9px;
-    margin: 6px 0;
-    box-sizing: border-box;
-}
-
-textarea {
-    min-height: 65px;
-}
-
-label {
-    display: block;
-    margin: 8px 0;
-}
-
-button {
-    padding: 14px;
-    width: 100%;
-    margin-top: 15px;
-    background: #2563eb;
-    color: white;
-    border: none;
-    font-size: 17px;
-    font-weight: bold;
-    border-radius: 6px;
-}
-
-button:hover {
-    background: #1d4ed8;
-}
-
-.card {
-    background: white;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
-  .firmaCanvas {
-    width: 100%;
-    height: 160px;
-    border: 2px solid #1e3a8a;
-    background: white;
-    touch-action: none;
-    border-radius: 6px;
-}  
-</style>
-</head>
-
-<body>
-
-<h1>Pauta Digital de Análisis de Fallas en Carros</h1>
-
-<div class="card">
-<h2>Datos Generales</h2>
-
-<input type="text" id="carro" placeholder="N° Carro / Contenedor">
-<input type="text" id="ot" placeholder="Orden de Trabajo OT">
-<input type="date" id="fechaInicio">
-<input type="date" id="fechaTermino">
-</div>
-
-<div class="card">
-<h2>Sistema Afectado</h2>
-
-<select id="sistema">
-    <option value="Freno">Freno</option>
-    <option value="Enganche">Enganche</option>
-    <option value="Descarga">Descarga</option>
-    <option value="Rodado">Rodado</option>
-    <option value="Estructura">Estructura</option>
-    <option value="Carga">Carga</option>
-    <option value="Residuos">Residuos</option>
-</select>
-</div>
-
-<div class="card">
-<h2>Falla Detectada</h2>
-
-<input type="text" id="parte" placeholder="Indique parte afectada">
-<input type="text" id="sintoma" placeholder="Indique síntoma detectado">
-</div>
-
-<div class="card">
-<h2>Análisis de Falla - 5 Porqués</h2>
-
-<textarea id="p1" placeholder="¿Por qué ocurrió la falla?"></textarea>
-<textarea id="p2" placeholder="¿Por qué ocurrió lo anterior?"></textarea>
-<textarea id="p3" placeholder="¿Por qué ocurrió lo anterior?"></textarea>
-<textarea id="p4" placeholder="¿Por qué ocurrió lo anterior?"></textarea>
-<textarea id="p5" placeholder="Causa raíz final"></textarea>
-</div>
-
-<div class="card">
-<h2>Clasificación de Causa - 6M</h2>
-
-<label><input type="checkbox" value="Mano de Obra"> Mano de Obra</label>
-<label><input type="checkbox" value="Método"> Método</label>
-<label><input type="checkbox" value="Material"> Material</label>
-<label><input type="checkbox" value="Maquinaria / Equipo"> Maquinaria / Equipo</label>
-<label><input type="checkbox" value="Medio Ambiente"> Medio Ambiente</label>
-<label><input type="checkbox" value="Operación"> Operación</label>
-</div>
-
-<div class="card">
-<h2>Justificación de la Causa</h2>
-
-<textarea id="justificacion" placeholder="Explique por qué se determina esta causa raíz"></textarea>
-</div>
-
-<div class="card">
-<h2>Acción Correctiva</h2>
-
-<textarea id="accion" placeholder="Describa la acción correctiva realizada o propuesta"></textarea>
-</div>
-
-<div class="card">
-<h2>Responsables</h2>
-
-<input type="text" id="colaborador" placeholder="Nombre colaborador">
-<label>Firma Colaborador</label>
-<canvas id="firmaColaborador" class="firmaCanvas"></canvas>
-<button type="button" onclick="limpiarFirma('firmaColaborador')">Limpiar firma colaborador</button>
-
-<input type="text" id="supervisor" placeholder="Nombre supervisor / revisor">
-</div>
-    
-<div class="card">
-<h2>Observaciones</h2>
-
-<textarea id="observaciones" placeholder="Observaciones adicionales"></textarea>
-</div>
-
-<div class="card">
-<h2>Fotos / Evidencias</h2>
-
-<input type="file" id="foto" multiple accept="image/*">
-<small>Máximo recomendado: 2 fotos max (6MB en total).</small>
-</div>
-
-<button onclick="enviar()">Enviar Pauta</button>
-
 <script>
+let firmaColaboradorRealizada = false;
+
 function obtenerCausas6M() {
     let causas = [];
     document.querySelectorAll('input[type="checkbox"]:checked').forEach(el => {
@@ -178,7 +9,7 @@ function obtenerCausas6M() {
     return causas.join(", ");
 }
 
-   function prepararFirma(canvasId) {
+function prepararFirma(canvasId) {
     const canvas = document.getElementById(canvasId);
     const ctx = canvas.getContext("2d");
 
@@ -218,6 +49,7 @@ function obtenerCausas6M() {
         const pos = getPos(e);
         ctx.lineTo(pos.x, pos.y);
         ctx.stroke();
+        firmaColaboradorRealizada = true;
     }
 
     function terminar(e) {
@@ -239,37 +71,109 @@ function limpiarFirma(canvasId) {
     const canvas = document.getElementById(canvasId);
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    firmaColaboradorRealizada = false;
 }
 
 window.onload = function() {
     prepararFirma("firmaColaborador");
-}; 
-function firmaVacia(canvasId) {
-    const canvas = document.getElementById(canvasId);
-    const ctx = canvas.getContext("2d");
+};
 
-    const pixelData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-
-    for (let i = 0; i < pixelData.length; i += 4) {
-        if (pixelData[i + 3] !== 0) { // canal alpha
-            return false; // hay algo dibujado
-        }
+function validarFormulario() {
+    if (!document.getElementById("carro").value.trim()) {
+        alert("Debe ingresar el N° de Carro");
+        return false;
     }
 
-    return true; // está vacío
+    if (!document.getElementById("ot").value.trim()) {
+        alert("Debe ingresar la OT");
+        return false;
+    }
+
+    if (!document.getElementById("fechaInicio").value) {
+        alert("Debe ingresar la fecha de inicio");
+        return false;
+    }
+
+    if (!document.getElementById("fechaTermino").value) {
+        alert("Debe ingresar la fecha de término");
+        return false;
+    }
+
+    if (!document.getElementById("sistema").value) {
+        alert("Debe seleccionar un sistema");
+        return false;
+    }
+
+    if (!document.getElementById("parte").value.trim()) {
+        alert("Debe ingresar la parte afectada");
+        return false;
+    }
+
+    if (!document.getElementById("sintoma").value.trim()) {
+        alert("Debe ingresar el síntoma");
+        return false;
+    }
+
+    if (!document.getElementById("p1").value.trim()) {
+        alert("Debe ingresar ¿Por qué 1?");
+        return false;
+    }
+
+    if (!document.getElementById("p2").value.trim()) {
+        alert("Debe ingresar ¿Por qué 2?");
+        return false;
+    }
+
+    if (!document.getElementById("p3").value.trim()) {
+        alert("Debe ingresar ¿Por qué 3?");
+        return false;
+    }
+
+    if (!obtenerCausas6M()) {
+        alert("Debe seleccionar al menos una causa 6M");
+        return false;
+    }
+
+    if (!document.getElementById("justificacion").value.trim()) {
+        alert("Debe ingresar la justificación de la causa");
+        return false;
+    }
+
+    if (!document.getElementById("accion").value.trim()) {
+        alert("Debe ingresar la acción correctiva");
+        return false;
+    }
+
+    if (!document.getElementById("colaborador").value.trim()) {
+        alert("Debe ingresar el nombre del colaborador");
+        return false;
+    }
+
+    if (!firmaColaboradorRealizada) {
+        alert("Debe ingresar la firma del colaborador");
+        return false;
+    }
+
+    return true;
 }
-    
+
 function enviar() {
     const archivos = document.getElementById("foto").files;
-if (archivos.length > 2) {
-    alert("Solo puedes subir máximo 2 fotos.");
-    return;
-}
+
+    if (archivos.length > 2) {
+        alert("Solo puedes subir máximo 2 fotos.");
+        return;
+    }
+
     for (let i = 0; i < archivos.length; i++) {
         if (archivos[i].size > 6000000) {
             alert("La foto " + archivos[i].name + " pesa más de 6 MB. Debe comprimirse antes de enviar.");
             return;
         }
+    }
+
+    if (!validarFormulario()) {
+        return;
     }
 
     let fotos = [];
@@ -290,90 +194,6 @@ if (archivos.length > 2) {
     });
 
     Promise.all(leerArchivos).then(() => {
-
-        // 🔴 VALIDACION DE CAMPOS OBLIGATORIOS
-
-if (!document.getElementById("carro").value.trim()) {
-    alert("Debe ingresar el N° de Carro");
-    return;
-}
-
-if (!document.getElementById("ot").value.trim()) {
-    alert("Debe ingresar la OT");
-    return;
-}
-
-if (!document.getElementById("fechaInicio").value) {
-    alert("Debe ingresar la fecha de inicio");
-    return;
-}
-
-if (!document.getElementById("fechaTermino").value) {
-    alert("Debe ingresar la fecha de término");
-    return;
-}
-
-if (!document.getElementById("sistema").value) {
-    alert("Debe seleccionar un sistema");
-    return;
-}
-
-if (!document.getElementById("parte").value.trim()) {
-    alert("Debe ingresar la parte afectada");
-    return;
-}
-
-if (!document.getElementById("sintoma").value.trim()) {
-    alert("Debe ingresar el síntoma");
-    return;
-}
-
-// 🔴 3 POR QUÉS MINIMO
-if (!document.getElementById("p1").value.trim()) {
-    alert("Debe ingresar ¿Por qué 1?");
-    return;
-}
-
-if (!document.getElementById("p2").value.trim()) {
-    alert("Debe ingresar ¿Por qué 2?");
-    return;
-}
-
-if (!document.getElementById("p3").value.trim()) {
-    alert("Debe ingresar ¿Por qué 3?");
-    return;
-}
-
-// 🔴 CAUSA 6M
-if (!obtenerCausas6M()) {
-    alert("Debe seleccionar al menos una causa 6M");
-    return;
-}
-
-// 🔴 JUSTIFICACION
-if (!document.getElementById("justificacion").value.trim()) {
-    alert("Debe ingresar la justificación de la causa");
-    return;
-}
-
-// 🔴 ACCION CORRECTIVA
-if (!document.getElementById("accion").value.trim()) {
-    alert("Debe ingresar la acción correctiva");
-    return;
-}
-
-// 🔴 COLABORADOR
-if (!document.getElementById("colaborador").value.trim()) {
-    alert("Debe ingresar el nombre del colaborador");
-    return;
-}
-
-// 🔴 FIRMA
-        
-if (firmaVacia("firmaColaborador")) {
-    alert("Debe ingresar la firma del colaborador");
-    return;
-}
         const data = {
             carro: document.getElementById("carro").value,
             ot: document.getElementById("ot").value,
@@ -403,14 +223,14 @@ if (firmaVacia("firmaColaborador")) {
         })
         .then(res => res.text())
         .then(res => {
-    console.log("Respuesta Apps Script:", res);
+            console.log("Respuesta Apps Script:", res);
 
-    if (res.includes("OK")) {
-        alert("Pauta enviada correctamente");
-    } else {
-        alert("ERROR desde Apps Script: " + res);
-    }
-})
+            if (res.includes("OK")) {
+                alert("Pauta enviada correctamente");
+            } else {
+                alert("ERROR desde Apps Script: " + res);
+            }
+        })
         .catch(err => {
             console.error(err);
             alert("Error al enviar la pauta");
@@ -418,6 +238,3 @@ if (firmaVacia("firmaColaborador")) {
     });
 }
 </script>
-
-</body>
-</html>
