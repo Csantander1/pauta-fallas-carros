@@ -168,10 +168,13 @@ function obtenerCausas6M() {
 
 function enviar() {
     const archivos = document.getElementById("foto").files;
-
+if (archivos.length > 2) {
+    alert("Solo puedes subir máximo 2 fotos.");
+    return;
+}
     for (let i = 0; i < archivos.length; i++) {
-        if (archivos[i].size > 5000000) {
-            alert("La foto " + archivos[i].name + " pesa más de 5 MB. Debe comprimirse antes de enviar.");
+        if (archivos[i].size > 6000000) {
+            alert("La foto " + archivos[i].name + " pesa más de 6 MB. Debe comprimirse antes de enviar.");
             return;
         }
     }
